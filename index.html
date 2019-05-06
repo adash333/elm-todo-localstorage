@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Main</title>
+        <link rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.min.css">
+        <script defer
+            src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <script src="main.js"></script>
+    </head>
+
+    <body>
+        <div id="elm"></div>
+        <script>
+            // Elmアプリの初期化時にlocalStorageからinitial stateをElmアプリに送る
+            var storedState = localStorage.getItem('elm-todo-save2');
+            var startingState = storedState ? JSON.parse(storedState) : null;
+            var app = Elm.Main.init({
+                node: document.getElementById('elm'),
+                flags: startingState
+            });
+            // ElmアプリでTODOリストが更新されたら、TODOリストすべてを受け取ってlocalStorageに保存する
+            app.ports.setStorage.subscribe(function(state) {
+                localStorage.setItem('elm-todo-save2', JSON.stringify(state));
+            });
+        </script>
+    </body>
+</html>
